@@ -6,6 +6,7 @@ import { MaterialCommunityIcons, FontAwesome, Foundation } from '@expo/vector-ic
 
 import Dashboard from './screens/dashboard';
 import Report from './screens/report';
+import Analytics from './screens/analytics';
 
 const TabScreen = createMaterialTopTabNavigator(
   {
@@ -18,6 +19,13 @@ const TabScreen = createMaterialTopTabNavigator(
     },
     Report: {
       screen: Report,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <Foundation name="results" size={25} color="white" />)
+      },
+    },
+    Analytics: {
+      screen: Analytics,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
           <Foundation name="results" size={25} color="white" />)

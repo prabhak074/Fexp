@@ -1,15 +1,35 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Image, TouchableOpacity, Alert, ScrollView } from 'react-native';
-import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
+import { StyleSheet, Text, Picker,View, TextInput, Button, Image, TouchableOpacity, Alert, ScrollView } from 'react-native';
 
 export default class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      exp1: '',
+      exp: '',
+      user: 'Prabhakaran' ,
+      Restaurants: '',
+      desc: '',
       // exp2: '',
+      prabha:'',
+      vicky:'',
     };
   }
+
+//   componentDidMount = async () => {
+//     try {
+//    const response = await fetch("http://172.20.8.222:5000/search")
+//    const posts = await response.json()
+   
+//    this.setState({
+//      prabha:posts.prabha,
+//      vicky:posts.vicky
+   
+//  });
+ 
+//  } catch (e) {
+//    console.log("Error @ table !!!!!!", e)
+//  }
+//   };
 
 
   submit = async () => {
@@ -20,18 +40,22 @@ export default class Dashboard extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        exp1: this.state.exp1,
-        // exp2: this.state.exp2,
-        curTime: new Date().toLocaleString()
-
+        exp: parseInt(this.state.exp),
+        user: this.state.user,
+        Restaurants: this.state.Restaurants,
+        desc: this.state.desc,
+        curTime: new Date().toLocaleString(),
       })
     }
     try {
-      const response = await fetch("http://172.20.8.222:3000/insert", req)
+      // const response = await fetch("https://evening-earth-13475.herokuapp.com/insert", req)
+      const response = await fetch("http://172.20.8.222:5000/insert", req)
+
       const posts = await response.json()
       console.log("data inserted!!!!!")
+      this.clearText();
     } catch (e) {
-      console.log("Error!!!!!!", e)
+      console.log("Error @ submit!!!!!!", e)
     }
   };
 
@@ -39,39 +63,63 @@ export default class Dashboard extends React.Component {
   clearText = () => {
     this.setState({
       exp1: '',
-      exp2: '',
+      user: "" ,
     })
   }
 
   render() {
-    const state = this.state;
+
 
     return (
       <ScrollView>
 
-      <View style={styles.container}>
+      <View style={styles.container1}>
     
     <View style={{marginTop:5}}>
-          <Text style={styles.heading}>Prabhakaran :</Text>
+          <Text style={styles.heading}>Expense :</Text>
           <TextInput
             style={styles.inputs}
             value={this.state.username}
-            onChangeText={exp1 => this.setState({ exp1 })}
+            onChangeText={exp => this.setState({ exp })}
           />
 
-          {/* <Text style={styles.heading}>Vicky :</Text>
-          <TextInput
-            style={styles.inputs}
-            value={this.state.password}
-            onChangeText={exp2 => this.setState({ exp2 })}
-          /> */}
+          <Picker
+          selectedValue={this.state.user}
+          style={{height: 50, width: 100}}
+          onValueChange={(itemValue, itemIndex) =>
+            this.setState({user: itemValue})
+          }>
+      <Picker.Item label="Prabhakaran" value="Prabhakaran" />
+      <Picker.Item label="Vignesh" value="Vignesh" />
+        </Picker>
+
+        <Text style={styles.heading}>Restaurants :</Text>
+                <TextInput
+                  style={styles.inputs}
+                  value={this.state.username}
+                  onChangeText={Restaurants => this.setState({ Restaurants })}
+                />
+
+          <Text style={styles.heading}>Description :</Text>
+                <TextInput
+                  style={styles.inputs}
+                  value={this.state.username}
+                  onChangeText={desc => this.setState({ desc })}
+                />
+
 
           <TouchableOpacity style={styles.buttons} onPress={this.submit}>
             <Text style={styles.but_name}>Submit</Text>
           </TouchableOpacity>
           </View>
-                   
+      
       </View>
+
+
+      <Text>Prabha's Expense : {this.state.prabha}</Text>     
+       <Text>Vicky's Expense : {this.state.vicky}</Text>
+
+  
 
       </ScrollView>
     )
@@ -80,20 +128,7 @@ export default class Dashboard extends React.Component {
 
 
 const styles = StyleSheet.create({
-  logo: {
-    width: 100,
-    height: 100,
-  },
-  logo_2: {
-    width: 200,
-    height: 40,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-    alignItems: "center",
-    justifyContent: 'center',
-  },
+
   heading: {
     color: "#062850",
     marginEnd: 200,
@@ -140,6 +175,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: "center",
   },
+  pickerStyle2: {
+    height: 75,
+    width: "100%",
+    color: '#344953',
+    borderColor: 'black',
+    borderWidth: 1,
+    justifyContent: 'center',
+    marginLeft: 15
+  },
+
   container1: { flex: 1, padding: 13, paddingTop: 0, backgroundColor: '#fff' },
     // container: { backgroundColor: '#fff' },
     head: { height: 40, backgroundColor: '#f1f8ff' },
